@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <title>CloudSponge Basic Installation</title>
+  <!-- you can delete everything above this comment, it's just here to make the helper pretty. -->
+
+  <script type="text/javascript">
+    // this is the main CloudSponge JavaScript snippet, don't edit it.
+    (function(u){
+      var d=document,s='script',a=d.createElement(s),m=d.getElementsByTagName(s)[0];
+      a.async=1;a.src=u;m.parentNode.insertBefore(a,m);
+    })('//api.cloudsponge.com/widget/CLOUDSPONGE_EXAMPLE_KEY.js');
+  </script>
+
+  <script type="text/javascript">
+    // this is where you can configure the behavior and style of the widget
+    // http://www.cloudsponge.com/developer/#the-contact-importer-widget
+    window.csPageOptions = {
+      textarea_id: 'contact_list',
+      mobile_render: true,
+      inlineOauth: 'mobile',
+      selectAccount: true,
+      include: ["email"],
+      sources: ['gmail','yahoo','windowslive','icloud','aol','linkedin']
+    };
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Basic Integration</h1>
+    <p>The simplest way to integrate the CloudSponge widget is to add an anchor tag with the <code>cs_import</code> class somewhere on your page.</p>
+
+    <!-- Any link with a class="cs_import" will start the import process -->
+    <a class="cs_import">Add from Address Book</a><br />
+
+    <!-- This textarea will be populated with the contacts returned by CloudSponge -->
+    <textarea placeholder="Type email addresses separated by commas or select them from your address book by clicking the link above." id="contact_list" style="width:450px;height:82px"></textarea>
+  </div>
+</body>
+</html>
