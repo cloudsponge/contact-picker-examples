@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <title>Zap to SendGrid</title>
+  <!-- you can delete everything above this comment, it's just here to make the helper pretty. -->
+
+
+  <script type="text/javascript">
+    // this is the main CloudSponge JavaScript snippet, you can replace CLOUDSPONGE_EXAMPLE_KEY with your
+    // own key after you buy a license. This key will only work on localhost.
+    (function(u){
+      var d=document,s='script',a=d.createElement(s),m=d.getElementsByTagName(s)[0];
+      a.async=1;a.src=u;m.parentNode.insertBefore(a,m);
+    })('//api.cloudsponge.com/widget/CLOUDSPONGE_EXAMPLE_KEY.js');
+  </script>
+
+  <script type="text/javascript">
+    // this is where you can configure the behavior and style of the widget
+    // http://www.cloudsponge.com/developer/#the-contact-importer-widget
+    window.csPageOptions = {
+      mobile_render: true,
+      inlineOauth: 'mobile',
+      selectAccount: true,
+      include: ["email"],
+      sources: ['gmail','yahoo','windowslive','icloud','aol','linkedin'],
+      // set skipSourceMenu to true when using deep links for a more consistent UX
+      skipSourceMenu:true, // suppresses the source menu unless linked to directly
+      // delay making the links that launch a popup clickable
+      // until after the widget has initialized completly. a popup window must
+      // be opened in an onclick handler, so we don't support queueing these actions
+      afterInit:function() {
+        var i, links = document.getElementsByClassName('delayed');
+        for (i = 0; i < links.length; i++) {
+          // make the links that launch a popup clickable by setting the href property
+          links[i].href = "#";
+        }
+        // if this is not a mobile browser, we can show and enable the desktop-only links
+        if (!cloudsponge.mobile) {
+          links = document.getElementsByClassName('desktop-only');
+          for (i = 0; i < links.length; i++) {
+            // show it
+            links[i].style.display = "";
+            // make it clickable
+            links[i].href = "#";
+          }
+        }
+      },
+      afterSubmitContacts:function(contacts, source, owner) {
+        for (var i = 0; i < contacts.length; i++) {
+          var form = document.createElement("form");
+          form.setAttribute("method", "post");
+          form.setAttribute("action", "https://zapier.com/hooks/catch/3r7335/");
+
+          var hiddenField = document.createElement("input");
+          hiddenField.setAttribute("type", "hidden");
+          hiddenField.setAttribute("name", "email");
+          hiddenField.setAttribute("value", contacts[i].selectedEmail());
+
+          form.appendChild(hiddenField);
+
+          document.body.appendChild(form);
+          form.submit();
+
+          alert('Submitted ' + contacts[i].selectedEmail());
+        }
+
+        return false;
+      }
+    };
+  </script>
+
+</head>
+
+<body>
+<div class="container">
+<h1>Zap to SendGrid</h1>
+<p>A quick refer-a-friend feature powered by Zapier and SendGrid.
+</p>
+
+<!-- Any link with a class="cs_import" will start the import process -->
+<a class="deep-link delayed" onclick="return cloudsponge.launch('gmail');">Gmail</a><br />
+<a class="deep-link delayed" onclick="return cloudsponge.launch('yahoo');">Yahoo</a><br />
+<a class="deep-link delayed" onclick="return cloudsponge.launch('windowslive');">Outlook.com</a><br />
+<a class="deep-link delayed" onclick="return cloudsponge.launch('icloud');">iCloud</a><br />
+<a class="deep-link delayed" onclick="return cloudsponge.launch('aol');">AOL</a><br />
+<a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('linkedin');">LinkedIn</a><br />
+<a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('addressbook');">OS X Contacts</a><br />
+<a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('outlook');">Outlook</a><br />
+<br />
+
+</div>
+</body>
+</html>
