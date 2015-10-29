@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-  <title>Zap to SendGrid</title>
-  <!-- you can delete everything above this comment, it's just here to make the helper pretty. -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+  <title>Zap to SendGrid</title>
+  <!-- You can delete everything above this comment, it's just here to make the helper pretty. -->
 
   <script type="text/javascript">
-    // this is the main CloudSponge JavaScript snippet, you can replace CLOUDSPONGE_EXAMPLE_KEY with your
+    // This is the main CloudSponge JavaScript snippet, you can replace CLOUDSPONGE_EXAMPLE_KEY with your
     // own key after you buy a license. This key will only work on localhost.
     (function(u){
       var d=document,s='script',a=d.createElement(s),m=d.getElementsByTagName(s)[0];
@@ -20,26 +24,26 @@
   </script>
 
   <script type="text/javascript">
-    // this is where you can configure the behavior and style of the widget
+    // This is where you can configure the behavior and style of the widget
     // http://www.cloudsponge.com/developer/#the-contact-importer-widget
     window.csPageOptions = {
       mobile_render: true,
-      inlineOauth: 'mobile',
-      selectAccount: true,
-      include: ["email"],
+      inlineOauth: 'mobile', // Inline oauth only when mobile
+      selectAccount: true, // Display account selection screen during the OAuth
+      include: ["email"], // Only contact email
       sources: ['gmail','yahoo','windowslive','icloud','aol','linkedin'],
-      // set skipSourceMenu to true when using deep links for a more consistent UX
+      // Set skipSourceMenu to true when using deep links for a more consistent UX
       skipSourceMenu:true, // suppresses the source menu unless linked to directly
-      // delay making the links that launch a popup clickable
+      // Delay making the links that launch a popup clickable
       // until after the widget has initialized completly. a popup window must
       // be opened in an onclick handler, so we don't support queueing these actions
       afterInit:function() {
         var i, links = document.getElementsByClassName('delayed');
         for (i = 0; i < links.length; i++) {
-          // make the links that launch a popup clickable by setting the href property
+          // Make the links that launch a popup clickable by setting the href property
           links[i].href = "#";
         }
-        // if this is not a mobile browser, we can show and enable the desktop-only links
+        // If this is not a mobile browser, we can show and enable the desktop-only links
         if (!cloudsponge.mobile) {
           links = document.getElementsByClassName('desktop-only');
           for (i = 0; i < links.length; i++) {
@@ -51,24 +55,24 @@
         }
       },
       afterSubmitContacts:function(contacts, source, owner) {
-        for (var i = 0; i < contacts.length; i++) {
-          var form = document.createElement("form");
-          form.setAttribute("method", "post");
-          form.setAttribute("action", "https://zapier.com/hooks/catch/3r7335/");
-
-          var hiddenField = document.createElement("input");
-          hiddenField.setAttribute("type", "hidden");
-          hiddenField.setAttribute("name", "email");
-          hiddenField.setAttribute("value", contacts[i].selectedEmail());
-
-          form.appendChild(hiddenField);
-
-          document.body.appendChild(form);
-          form.submit();
-
-          alert('Submitted ' + contacts[i].selectedEmail());
+        var body = $('#rafModal .modal-body');
+        // Capture the owner information
+        var owner_email = (owner && owner.email && owner.email[0] && owner.email[0].address) || "";
+        var owner_name = (owner && owner.first_name) || "";
+        if (owner && owner_name && owner.last_name){
+          owner_name+= ' ' + owner.last_name;
         }
-
+        // Open modal
+        $('#rafModal').modal({backdrop:'static', keyboard:false});
+        // Now for each contact, make a zap!
+        for (var i = 0; i < contacts.length; i++) {
+          var email = contacts[i].selectedEmail();
+          var zap = "https://zapier.com/hooks/catch/3r7335/";
+          var data = {'email': email, 'owner_email': owner_email, 'owner_name': owner_name };
+          $.post(zap, data);
+          body.append('<p>'+email+': <span class="text-success">✔</span> sent!</p>');
+        }
+        body.prepend("<p>We've sent "+contacts.length+" referals:</p>");
         return false;
       }
     };
@@ -77,22 +81,40 @@
 </head>
 
 <body>
-<div class="container">
-<h1>Zap to SendGrid</h1>
-<p>A quick refer-a-friend feature powered by Zapier and SendGrid.
-</p>
+  <div class="container">
 
-<!-- Any link with a class="cs_import" will start the import process -->
-<a class="deep-link delayed" onclick="return cloudsponge.launch('gmail');">Gmail</a><br />
-<a class="deep-link delayed" onclick="return cloudsponge.launch('yahoo');">Yahoo</a><br />
-<a class="deep-link delayed" onclick="return cloudsponge.launch('windowslive');">Outlook.com</a><br />
-<a class="deep-link delayed" onclick="return cloudsponge.launch('icloud');">iCloud</a><br />
-<a class="deep-link delayed" onclick="return cloudsponge.launch('aol');">AOL</a><br />
-<a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('linkedin');">LinkedIn</a><br />
-<a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('addressbook');">OS X Contacts</a><br />
-<a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('outlook');">Outlook</a><br />
-<br />
+    <h1>Zap to SendGrid</h1>
+    <p>A quick refer-a-friend feature powered by Zapier and SendGrid.</p>
 
-</div>
+    <!-- cloudsponge.launch will start the import process -->
+    <a class="deep-link delayed" onclick="return cloudsponge.launch('gmail');" data-toggle="tooltip" title="Gmail"><img src='img/gmail.png'/></a>&nbsp;
+    <a class="deep-link delayed" onclick="return cloudsponge.launch('yahoo');" data-toggle="tooltip" title="Yahoo"><img src='img/yahoo.png'/></a>&nbsp;
+    <a class="deep-link delayed" onclick="return cloudsponge.launch('windowslive');" data-toggle="tooltip" title="Outlook.com"><img src='img/outlook.com.png'/></a>&nbsp;
+    <a class="deep-link delayed" onclick="return cloudsponge.launch('icloud');" data-toggle="tooltip" title="iCloud"><img src='img/icloud.png'/></a>&nbsp;
+    <a class="deep-link delayed" onclick="return cloudsponge.launch('aol');" data-toggle="tooltip" title="AOL"><img src='img/aol.png'/></a>&nbsp;
+    <a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('linkedin');" data-toggle="tooltip" title="LinkedIn"><img src='img/linkedin.png'/></a>&nbsp;
+    <a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('addressbook');" data-toggle="tooltip" title="OS X Contacts"><img src='img/apple-desktop.png'/></a>&nbsp;
+    <a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('outlook');" data-toggle="tooltip" title="Outlook"><img src='img/outlook-desktop.png'/></a>&nbsp;
+
+    <br/>
+
+    <!-- Zap! Modal -->
+    <div class="modal fade" id="rafModal" tabindex="-1" role="dialog" aria-labelledby="rafModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="rafModalLabel">Thank you!</h4>
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </body>
 </html>
