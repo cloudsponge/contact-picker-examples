@@ -28,51 +28,46 @@
     // http://www.cloudsponge.com/developer/#the-contact-importer-widget
     window.csPageOptions = {
       mobile_render: true,
-      inlineOauth: 'mobile', // Inline oauth only when mobile
+      inlineOauth: true, // Inline oauth only when mobile
       selectAccount: true, // Display account selection screen during the OAuth
-      include: ["email"], // Only contact email
-      sources: ['gmail','yahoo','windowslive','icloud','aol','linkedin'],
       // Set skipSourceMenu to true when using deep links for a more consistent UX
       skipSourceMenu:true, // suppresses the source menu unless linked to directly
       // Delay making the links that launch a popup clickable
       // until after the widget has initialized completly. a popup window must
       // be opened in an onclick handler, so we don't support queueing these actions
       afterInit:function() {
+        // http://www.cloudsponge.com/developer/#callbacks-afterInit
         var i, links = document.getElementsByClassName('delayed');
         for (i = 0; i < links.length; i++) {
           // Make the links that launch a popup clickable by setting the href property
           links[i].href = "#";
         }
-        // If this is not a mobile browser, we can show and enable the desktop-only links
-        if (!cloudsponge.mobile) {
-          links = document.getElementsByClassName('desktop-only');
-          for (i = 0; i < links.length; i++) {
-            // show it
-            links[i].style.display = "";
-            // make it clickable
-            links[i].href = "#";
-          }
-        }
       },
       afterSubmitContacts:function(contacts, source, owner) {
+        // http://www.cloudsponge.com/developer/#callbacks-afterSubmitContacts
         var body = $('#rafModal .modal-body');
         // Capture the owner information
-        var owner_email = (owner && owner.email && owner.email[0] && owner.email[0].address) || "";
-        var owner_name = (owner && owner.first_name) || "";
-        if (owner && owner_name && owner.last_name){
-          owner_name+= ' ' + owner.last_name;
-        }
+        var owner_first_name = (owner && owner.first_name) || "Your friend";
+        var owner_email = "(" + (owner && owner.email && owner.email[0] && owner.email[0].address) + ")" || "";
+
         // Open modal
         $('#rafModal').modal({backdrop:'static', keyboard:false});
-        // Now for each contact, make a zap!
+
+        // Now for each contact, post to the Zapier webhook URL!
         for (var i = 0; i < contacts.length; i++) {
           var email = contacts[i].selectedEmail();
+          var first_name = contacts[i].first_name || "there";
           var zap = "https://zapier.com/hooks/catch/3r7335/";
-          var data = {'email': email, 'owner_email': owner_email, 'owner_name': owner_name };
+          var data = {
+            'email': email,
+            'first_name': first_name,
+            'owner_email': owner_email,
+            'owner_first_name': owner_first_name
+          };
           $.post(zap, data);
-          body.append('<p>'+email+': <span class="text-success">✔</span> sent!</p>');
+          body.append('<p>' + email + ': <span class="text-success">✔</span> sent!</p>');
         }
-        body.prepend("<p>We've sent "+contacts.length+" referals:</p>");
+        body.prepend("<p>We've sent referral emails to " + contacts.length + " of your friends.</p>");
         return false;
       }
     };
@@ -92,9 +87,6 @@
     <a class="deep-link delayed" onclick="return cloudsponge.launch('windowslive');" data-toggle="tooltip" title="Outlook.com"><img src='/img/contact-sources/outlook.com.png'/></a>&nbsp;
     <a class="deep-link delayed" onclick="return cloudsponge.launch('icloud');" data-toggle="tooltip" title="iCloud"><img src='/img/contact-sources/icloud.png'/></a>&nbsp;
     <a class="deep-link delayed" onclick="return cloudsponge.launch('aol');" data-toggle="tooltip" title="AOL"><img src='/img/contact-sources/aol.png'/></a>&nbsp;
-    <a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('linkedin');" data-toggle="tooltip" title="LinkedIn"><img src='/img/contact-sources/linkedin.png'/></a>&nbsp;
-    <a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('addressbook');" data-toggle="tooltip" title="OS X Contacts"><img src='/img/contact-sources/apple-desktop.png'/></a>&nbsp;
-    <a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('outlook');" data-toggle="tooltip" title="Outlook"><img src='/img/contact-sources/outlook-desktop.png'/></a>&nbsp;
 
     <br/>
 
@@ -107,6 +99,7 @@
             <h4 class="modal-title" id="rafModalLabel">Thank you!</h4>
           </div>
           <div class="modal-body">
+            <!-- starts off blank, this div will be populated by the loop inside the afterSubmitContacts callback above -->
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
