@@ -9,47 +9,29 @@
   <title>CloudSponge Deep Link Installation</title>
   <!-- you can delete everything above this comment, it's just here to make the helper pretty. -->
 
-  <script type="text/javascript">
-    // this is the main CloudSponge JavaScript snippet, don't edit it.
-    (function(u){
-      var d=document,s='script',a=d.createElement(s),m=d.getElementsByTagName(s)[0];
-      a.async=1;a.src=u;m.parentNode.insertBefore(a,m);
-    })('//api.cloudsponge.com/widget/CLOUDSPONGE_EXAMPLE_KEY.js');
-  </script>
-
+  <script src="//api.cloudsponge.com/widget/localhost-only.js"></script>
   <script type="text/javascript">
     // this is where you can configure the behavior and style of the widget
     // http://www.cloudsponge.com/developer/#the-contact-importer-widget
-    window.csPageOptions = {
-      textarea_id: 'contact_list',
-      mobile_render: true,
-      inlineOauth: 'mobile',
-      selectAccount: true,
-      include: ["email"],
+    cloudsponge.init({
       sources: ['gmail','yahoo','windowslive','icloud','aol','linkedin'],
+      include: ["email"],
       // set skipSourceMenu to true when using deep links for a more consistent UX
-      skipSourceMenu:true, // suppresses the source menu unless linked to directly
+      skipSourceMenu: true, // suppresses the source menu unless linked to directly
       // delay making the links that launch a popup clickable
       // until after the widget has initialized completly. a popup window must
       // be opened in an onclick handler, so we don't support queueing these actions
-      afterInit:function() {
-        var i, links = document.getElementsByClassName('delayed');
-        for (i = 0; i < links.length; i++) {
-          // make the links that launch a popup clickable by setting the href property
-          links[i].href = "#";
-        }
+      afterInit: function() {
+        var i, links = document.getElementsByClassName('desktop-only');
         // if this is not a mobile browser, we can show and enable the desktop-only links
         if (!cloudsponge.mobile) {
-          links = document.getElementsByClassName('desktop-only');
           for (i = 0; i < links.length; i++) {
             // show it
             links[i].style.display = "";
-            // make it clickable
-            links[i].href = "#";
           }
         }
       }
-    };
+    });
   </script>
 </head>
 <body>
@@ -59,18 +41,24 @@
     <p>Most people replace these text links with graphics. You can <a href="http://www.cloudsponge.com/img/developer/icon-set.zip">download some icons here</a> if you don't have your own set.</p>
 
     <!-- Any link with a class="cs_import" will start the import process -->
-    <a class="deep-link delayed" onclick="return cloudsponge.launch('gmail');">Gmail</a><br />
-    <a class="deep-link delayed" onclick="return cloudsponge.launch('yahoo');">Yahoo</a><br />
-    <a class="deep-link delayed" onclick="return cloudsponge.launch('windowslive');">Outlook.com</a><br />
-    <a class="deep-link delayed" onclick="return cloudsponge.launch('icloud');">iCloud</a><br />
-    <a class="deep-link delayed" onclick="return cloudsponge.launch('aol');">AOL</a><br />
-    <a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('linkedin');">LinkedIn</a><br />
-    <a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('addressbook');">OS X Contacts</a><br />
-    <a class="deep-link desktop-only" style="display: none;" onclick="return cloudsponge.launch('outlook');">Outlook</a><br />
+    <a class="cloudsponge-launch" data-cloudsponge-source="gmail">Gmail</a><br />
+    <a class="cloudsponge-launch" data-cloudsponge-source="yahoo">Yahoo</a><br />
+    <a class="cloudsponge-launch" data-cloudsponge-source="windowslive">Outlook.com</a><br />
+    <a class="cloudsponge-launch" data-cloudsponge-source="icloud">iCloud</a><br />
+    <a class="cloudsponge-launch" data-cloudsponge-source="aol">AOL</a><br />
+    <a class="cloudsponge-launch desktop-only" style="display: none;" data-cloudsponge-source="linkedin">LinkedIn</a><br />
+    <a class="cloudsponge-launch desktop-only" style="display: none;" data-cloudsponge-source="addressbook">OS X Contacts</a><br />
+    <a class="cloudsponge-launch desktop-only" style="display: none;" data-cloudsponge-source="outlook">Outlook</a><br />
     <br />
 
     <!-- This textarea will be populated with the contacts returned by CloudSponge -->
-    <textarea placeholder="Type email addresses separated by commas or select them from your address book by clicking the link above." id="contact_list" style="width:450px;height:82px"></textarea>
+    <textarea class="cloudsponge-contacts" placeholder="Type email addresses separated by commas or select them from your address book by clicking the link above." style="width:450px;height:82px"></textarea>
+
+    <div>
+      <a href="/">
+        Back
+      </a>
+    </div>
   </div>
 </body>
 </html>
