@@ -15,22 +15,7 @@
     // http://www.cloudsponge.com/developer/#the-contact-importer-widget
     cloudsponge.init({
       sources: ['gmail','yahoo','windowslive','icloud','aol','linkedin'],
-      include: ["email"],
-      // set skipSourceMenu to true when using deep links for a more consistent UX
-      skipSourceMenu: true, // suppresses the source menu unless linked to directly
-      // delay making the links that launch a popup clickable
-      // until after the widget has initialized completly. a popup window must
-      // be opened in an onclick handler, so we don't support queueing these actions
-      afterInit: function() {
-        var i, links = document.getElementsByClassName('desktop-only');
-        // if this is not a mobile browser, we can show and enable the desktop-only links
-        if (!cloudsponge.mobile) {
-          for (i = 0; i < links.length; i++) {
-            // show it
-            links[i].style.display = "";
-          }
-        }
-      }
+      include: ["email"]
     });
   </script>
 </head>
@@ -46,9 +31,9 @@
     <a class="cloudsponge-launch" data-cloudsponge-source="windowslive">Outlook.com</a><br />
     <a class="cloudsponge-launch" data-cloudsponge-source="icloud">iCloud</a><br />
     <a class="cloudsponge-launch" data-cloudsponge-source="aol">AOL</a><br />
-    <a class="cloudsponge-launch desktop-only" style="display: none;" data-cloudsponge-source="linkedin">LinkedIn</a><br />
-    <a class="cloudsponge-launch desktop-only" style="display: none;" data-cloudsponge-source="addressbook">OS X Contacts</a><br />
-    <a class="cloudsponge-launch desktop-only" style="display: none;" data-cloudsponge-source="outlook">Outlook</a><br />
+    <a class="cloudsponge-launch" data-cloudsponge-source="linkedin">LinkedIn</a><br />
+    <a class="cloudsponge-launch" data-cloudsponge-source="addressbook">OS X Contacts</a><br />
+    <a class="cloudsponge-launch" data-cloudsponge-source="outlook">Outlook</a><br />
     <br />
 
     <!-- This textarea will be populated with the contacts returned by CloudSponge -->
