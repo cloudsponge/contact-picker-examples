@@ -12,6 +12,7 @@ Hosting this directory is straightforward if you have python installed on your s
 
 The simplest way to integrate the CloudSponge widget is to add an anchor tag with the <code>cloudsponge-launch</code> class somewhere on your page.
 
+* [Run /minimum.html](/minimum.html)
 * [Run /basic.html](/basic.html)
 * [Documentation](https://www.cloudsponge.com/developer/contact-picker/basic-installation/)
 
