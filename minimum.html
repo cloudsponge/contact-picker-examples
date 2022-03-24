@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<!--
+  Any widget integration must do three things:
+    1) include the widget script,
+    2) provide a way for the end user to launch the widget and,
+    3) do something with the user's contacts.
+  This basic integration does all.
+ -->
+
+<!-- 
+  Include the script anywhere on your page, usually in the head
+   (don't forget to replace `localhost-only` with your CloudSponge key)
+  -->
+<script src="https://api.cloudsponge.com/widget/localhost-only.js"></script>
+
+<!-- 
+  #2 provide a way for the end user to launch the widget:
+  Any link with a class="cloudsponge-launch" will start the import process.
+-->
+<a class="cloudsponge-launch">Add from Address Book</a>
+
+<!-- 
+  #3 do something with the user's contacts:
+  This textarea will be populated with the contacts returned by CloudSponge. 
+-->
+<textarea class="cloudsponge-contacts"></textarea>
+
+</body>
+</html>
