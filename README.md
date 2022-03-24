@@ -20,6 +20,6 @@ The simplest way to integrate the CloudSponge widget is to add an anchor tag wit
 You can skip the main menu and let your users go straight to the contact source that they want by adding these deep links to your page.
 
 * [Run /deep-links.html](/deep-links.html)
-* [Documentation]((https://www.cloudsponge.com/developer/contact-picker/linking-options/deep-links/)
+* [Documentation](https://www.cloudsponge.com/developer/contact-picker/linking-options/deep-links/)
 
 Most people replace these text links with graphics. You can [download some icons here](https://www.iconfinder.com/cloudsponge) if you don't have your own set.
