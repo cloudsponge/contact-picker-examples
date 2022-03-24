@@ -14,7 +14,7 @@
     // this is where you can configure the behavior and style of the widget
     // http://www.cloudsponge.com/developer/#the-contact-importer-widget
     cloudsponge.init({
-      sources: ['gmail','yahoo','windowslive','icloud','aol','linkedin'],
+      sources: ['gmail','yahoo','outlookcom','office365','icloud','aol'],
       include: ["email"]
     });
   </script>
@@ -23,17 +23,15 @@
   <div class="container">
     <h1>Deep Link Integration</h1>
     <p>You can skip the main menu and let your users go straight to the contact source that they want by adding these deep links to your page.</p>
-    <p>Most people replace these text links with graphics. You can <a href="http://www.cloudsponge.com/img/developer/icon-set.zip">download some icons here</a> if you don't have your own set.</p>
+    <p>Most people replace these text links with graphics. You can <a href="https://www.iconfinder.com/cloudsponge" target="_blank">download some icons here</a> if you don't have your own set.</p>
 
     <!-- Any link with a class="cs_import" will start the import process -->
-    <a class="cloudsponge-launch" data-cloudsponge-source="gmail">Gmail</a><br />
+    <a class="cloudsponge-launch" data-cloudsponge-source="gmail">Google Contacts</a><br />
     <a class="cloudsponge-launch" data-cloudsponge-source="yahoo">Yahoo</a><br />
-    <a class="cloudsponge-launch" data-cloudsponge-source="windowslive">Outlook.com</a><br />
+    <a class="cloudsponge-launch" data-cloudsponge-source="outlookcom">Outlook.com</a><br />
+    <a class="cloudsponge-launch" data-cloudsponge-source="office365">Office 365</a><br />
     <a class="cloudsponge-launch" data-cloudsponge-source="icloud">iCloud</a><br />
     <a class="cloudsponge-launch" data-cloudsponge-source="aol">AOL</a><br />
-    <a class="cloudsponge-launch" data-cloudsponge-source="linkedin">LinkedIn</a><br />
-    <a class="cloudsponge-launch" data-cloudsponge-source="addressbook">OS X Contacts</a><br />
-    <a class="cloudsponge-launch" data-cloudsponge-source="outlook">Outlook</a><br />
     <br />
 
     <!-- This textarea will be populated with the contacts returned by CloudSponge -->

@@ -8,7 +8,6 @@ Hosting this directory is straightforward if you have python installed on your s
 * run `python -m SimpleHTTPServer 5000`
 * open [localhost:5000/](http://localhost:5000/) in a browser
 
-
 ## Basic Installation
 
 The simplest way to integrate the CloudSponge widget is to add an anchor tag with the <code>cloudsponge-launch</code> class somewhere on your page.
