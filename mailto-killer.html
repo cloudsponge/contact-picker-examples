@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <title>CloudSponge Mailto Killer</title>
+  <!-- you can delete everything above this comment, it's just here to make the helper pretty. -->
+
+  <script src="//api.cloudsponge.com/widget/localhost-only.js"></script>
+  <script>
+    cloudsponge.init({
+      browserContactCacheMin: 3600,
+      localeData: {
+        GET_CONTACTS: 'Send ${0} invitations'
+      },
+      // receive the contacts into your javascript and direct the page to open the native mail app.
+      afterSubmitContacts: function(contacts, source, owner) {
+        var emails = [],
+            senderEmail = owner && owner.email && owner.email[0] && encodeURIComponent(owner.email[0].address),
+            subject = encodeURIComponent('Hello there'),
+            body = encodeURIComponent('This is the body.\r\n\r\nHere is another line in the body.\r\n\r\nHere is a <a href="https://www.example.com/cool">link to sign up for my cool service</a>.');
+    
+        for (var contact of contacts) {
+          emails.push(contact.selectedEmail());
+        }
+        emails = emails.join();
+    
+        var composeLink = null;
+        if (source === 'gmail' && isDesktop()) {
+          // gmail has a nice composition UX that is low distraciton and closes after the user is done
+          composeLink = 'https://mail.google.com/mail/u/'+senderEmail+'?view=cm&fs=1&to='+senderEmail+'&su='+subject+'&body='+body+'&bcc='+emails;
+          window.open(composeLink);
+        } else {
+          var mailto = 'mailto:'+senderEmail+'?bcc='+emails+'&subject='+subject+'&body='+body;
+          window.location.href = mailto;
+        }
+      }
+    });
+    // helper function to determine if the gmail composer will open as expected
+    function isDesktop() {
+      var reMobileUA = /(Android|iPhone|iPad|iPod|Windows Phone|Windows CE|BlackBerry|Samsung|SAMSUNG|Opera Mini|Opera Mobi)/;
+      return !reMobileUA.test(navigator.userAgent);
+    }
+    </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Mailto Killer</h1>
+    <p>This example launches the user's preferred email client after they're done selecting people from their address book.</p>
+
+    <!-- Any link with a class="cs_import" will start the import process -->
+    <p><a class="cloudsponge-launch">Share via Email</a></p>
+    
+    <br />
+
+    <div>
+      <a href="/">
+        Back
+      </a>
+    </div>
+
+  </div>
+</body>
+</html>
