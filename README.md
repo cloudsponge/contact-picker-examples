@@ -5,7 +5,7 @@ Hosting this directory is straightforward if you have python installed on your s
 
 * open a terminal
 * cd to this directory
-* run `python -m SimpleHTTPServer 5000`
+* run `python -m SimpleHTTPServer 5000` (or `python -m http.server 5000` if you're using Python 3)
 * open [localhost:5000/](http://localhost:5000/) in a browser
 
 ## Basic Installation
