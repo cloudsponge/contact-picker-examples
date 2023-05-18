@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <title>CloudSponge Basic Installation</title>
+  <!-- you can delete everything above this comment, it's just here to make the helper pretty. -->
+
+  <script src="//api.cloudsponge.com/widget/localhost-only.js"></script>
+
+  <script type="text/javascript">
+    cloudsponge.init({
+        // implement custom logic for the afterSubmitContacts callback
+        // https://www.cloudsponge.com/developer/contact-picker/javascript-callbacks/after-submit-contacts/
+        afterSubmitContacts: function(contacts, source, owner) {
+            // create the header row for the csv file
+            var csvStr = "First Name,Last Name,Email\n";
+
+            // loop through the selected contacts and construct a CSV file
+            for (var contact of contacts) {
+                // https://www.cloudsponge.com/developer/contact-picker/data-structure/
+                csvStr += contact.first_name + ',' + contact.last_name + ',' + contact.email[0].address + '\n';
+            }
+
+            // inspired by: https://stackoverflow.com/questions/17564103/using-javascript-to-download-file-as-a-csv-file
+            var hiddenElement = document.createElement('a');
+            hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvStr);
+            hiddenElement.target = '_blank';
+            hiddenElement.download = 'contacts.csv';
+            hiddenElement.click();
+      },
+      // Override default CloudSponge text for the contact picker submit button
+      // https://www.cloudsponge.com/developer/contact-picker/options/locale-data/
+      localeData: {
+        GET_CONTACTS: "Download CSV File"
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="container" style="text-align: center;">
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <a class="cloudsponge-launch">Add from Address Book</a><br />
+
+  </div>
+</body>
+</html>
